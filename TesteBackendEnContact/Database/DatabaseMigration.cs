@@ -27,6 +27,12 @@ namespace TesteBackendEnContact.Database
                 .WithColumn("ContactBookId").AsInt32().NotNullable()
                 .WithColumn("Name").AsString(50).NotNullable()
             ;
+
+            Create.Table("User")
+                .WithColumn("Id").AsInt32().PrimaryKey().Identity()
+                .WithColumn("Email").AsString(100).NotNullable()
+                .WithColumn("Password").AsString(255).NotNullable()
+            ;
         }
 
         public override void Down()
@@ -34,6 +40,7 @@ namespace TesteBackendEnContact.Database
             Delete.Table("Company");
             Delete.Table("Contact");
             Delete.Table("ContactBook");
+            Delete.Table("User");
         }
     }
 }

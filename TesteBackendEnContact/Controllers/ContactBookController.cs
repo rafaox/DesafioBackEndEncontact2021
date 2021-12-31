@@ -9,38 +9,39 @@ using TesteBackendEnContact.Repository.Interface;
 namespace TesteBackendEnContact.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ContactBookController : ControllerBase
+    public class ContactBookController : BaseController
     {
         private readonly ILogger<ContactBookController> _logger;
+        private readonly IContactBookRepository _contactBookRepository;
 
-        public ContactBookController(ILogger<ContactBookController> logger)
+        public ContactBookController(ILogger<ContactBookController> logger, IContactBookRepository contactBookRepository)
         {
             _logger = logger;
+            _contactBookRepository = contactBookRepository;
         }
 
         [HttpPost]
-        public async Task<IContactBook> Post(ContactBook contactBook, [FromServices] IContactBookRepository contactBookRepository)
+        public async Task<IContactBook> Post(ContactBook contactBook)
         {
-            return await contactBookRepository.SaveAsync(contactBook);
+            return await _contactBookRepository.SaveAsync(contactBook);
         }
 
         [HttpDelete]
-        public async Task Delete(int id, [FromServices] IContactBookRepository contactBookRepository)
+        public async Task Delete(int id)
         {
-            await contactBookRepository.DeleteAsync(id);
+            await _contactBookRepository.DeleteAsync(id);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<IContactBook>> Get([FromServices] IContactBookRepository contactBookRepository)
+        public async Task<IEnumerable<IContactBook>> Get()
         {
-            return await contactBookRepository.GetAllAsync();
+            return await _contactBookRepository.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<IContactBook> Get(int id, [FromServices] IContactBookRepository contactBookRepository)
+        public async Task<IContactBook> Get(int id)
         {
-            return await contactBookRepository.GetAsync(id);
+            return await _contactBookRepository.GetAsync(id);
         }
     }
 }

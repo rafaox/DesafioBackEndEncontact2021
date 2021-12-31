@@ -9,8 +9,7 @@ using TesteBackendEnContact.Repository.Interface;
 namespace TesteBackendEnContact.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class ContactController : ControllerBase
+    public class ContactController : BaseController
     {
         private readonly ILogger<ContactController> _logger;
 
