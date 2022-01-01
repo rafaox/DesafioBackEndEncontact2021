@@ -12,6 +12,7 @@ namespace TesteBackendEnContact.Config
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IContactBookRepository, ContactBookRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
         }
     }
 }

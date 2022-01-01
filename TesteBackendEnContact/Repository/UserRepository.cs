@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
-using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 using TesteBackendEnContact.Base;
 using TesteBackendEnContact.Controllers.Filters;

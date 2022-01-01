@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TesteBackendEnContact.Controllers.Models;
-using TesteBackendEnContact.Core.Interface.ContactBook.Company;
+using TesteBackendEnContact.Base;
+using TesteBackendEnContact.Controllers.Filters;
+using TesteBackendEnContact.Controllers.Models.Company;
 using TesteBackendEnContact.Repository.Interface;
 
 namespace TesteBackendEnContact.Controllers
@@ -21,27 +21,31 @@ namespace TesteBackendEnContact.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ICompany>> Post(SaveCompanyRequest company)
+        public async Task<BaseResponse<string>> Post([FromBody] RegisterCompanyViewModel companyViewModel)
         {
-            return Ok(await _companyRepository.SaveAsync(company.ToCompany()));
+            await _companyRepository.SaveAsync(companyViewModel);
+            return BaseResponse<string>.Created("Registration successful");
         }
 
-        [HttpDelete]
-        public async Task Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<BaseResponse<string>> Delete(int id)
         {
             await _companyRepository.DeleteAsync(id);
+            return BaseResponse<string>.Ok("Company deleted successfully");
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ICompany>> Get()
+        public async Task<BaseResponse<PagedResponseModel<CompanyViewModel>>> Get([FromQuery] CompanyFilter filter)
         {
-            return await _companyRepository.GetAllAsync();
+            PagedResponseModel<CompanyViewModel> companiesViewModel = await _companyRepository.GetAllAsync(filter);
+            return BaseResponse<PagedResponseModel<CompanyViewModel>>.Ok(companiesViewModel);
         }
 
         [HttpGet("{id}")]
-        public async Task<ICompany> Get(int id)
+        public async Task<BaseResponse<CompanyViewModel>> Get(int id)
         {
-            return await _companyRepository.GetAsync(id);
+            CompanyViewModel companyViewModel = await _companyRepository.GetAsync(id);
+            return BaseResponse<CompanyViewModel>.Ok(companyViewModel);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TesteBackendEnContact.Core.Domain.ContactBook;
-using TesteBackendEnContact.Core.Interface.ContactBook;
+using TesteBackendEnContact.Base;
+using TesteBackendEnContact.Controllers.Filters;
+using TesteBackendEnContact.Controllers.Models.ContactBook;
 using TesteBackendEnContact.Repository.Interface;
 
 namespace TesteBackendEnContact.Controllers
@@ -21,27 +21,31 @@ namespace TesteBackendEnContact.Controllers
         }
 
         [HttpPost]
-        public async Task<IContactBook> Post(ContactBook contactBook)
+        public async Task<BaseResponse<string>> Post([FromBody] RegisterContactBookViewModel contactBookViewModel)
         {
-            return await _contactBookRepository.SaveAsync(contactBook);
+            await _contactBookRepository.SaveAsync(contactBookViewModel);
+            return BaseResponse<string>.Created("Registration successful");
         }
 
-        [HttpDelete]
-        public async Task Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<BaseResponse<string>> Delete(int id)
         {
             await _contactBookRepository.DeleteAsync(id);
+            return BaseResponse<string>.Ok("Contact book deleted successfully");
         }
 
         [HttpGet]
-        public async Task<IEnumerable<IContactBook>> Get()
+        public async Task<BaseResponse<PagedResponseModel<ContactBookViewModel>>> Get([FromQuery] ContactBookFilter filter)
         {
-            return await _contactBookRepository.GetAllAsync();
+            PagedResponseModel<ContactBookViewModel> contactBooks = await _contactBookRepository.GetAllAsync(filter);
+            return BaseResponse<PagedResponseModel<ContactBookViewModel>>.Ok(contactBooks);
         }
 
         [HttpGet("{id}")]
-        public async Task<IContactBook> Get(int id)
+        public async Task<BaseResponse<ContactBookViewModel>> Get(int id)
         {
-            return await _contactBookRepository.GetAsync(id);
+            ContactBookViewModel contactBook = await _contactBookRepository.GetAsync(id);
+            return BaseResponse<ContactBookViewModel>.Ok(contactBook);
         }
     }
 }

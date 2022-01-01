@@ -5,13 +5,13 @@ namespace TesteBackendEnContact.Controllers.Models.User
 {
     public class RegisterUserViewModel
     {
-        [Required(ErrorMessage = "O e-mail é obrigatório.")]
-        [EmailAddress(ErrorMessage = "É obrigatório informar um e-mail válido.")]
-        [StringLength(100, ErrorMessage = "O e-mail deve ter no máximo 100 caracteres.")]
+        [Required(ErrorMessage = "E-mail is required.")]
+        [EmailAddress(ErrorMessage = "Invalid e-mail.")]
+        [StringLength(100, ErrorMessage = "The e-mail must have a maximum of 100 characters.")]
         [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "A senha é obrigatória.")]
+        [Required(ErrorMessage = "Password is required.")]
         [JsonPropertyName("password")]
         public string Password { get; set; }
     }
